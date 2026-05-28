@@ -37,5 +37,7 @@ struct Task
         }
         std::cout << "Final position: " << pos << std::endl;
         std::cout << "Entered basement at position: " << basementPos << std::endl;
+
+        inputStream.close();
     }
 };

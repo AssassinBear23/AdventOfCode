@@ -11,7 +11,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-// TODO: put a small description of the task
+/// TODO: put a small description of the task
 struct Task
 {
     static void Run()
@@ -19,7 +19,7 @@ struct Task
 
         /// TODO: CHANGE THE DAMN FILE NAME BEFORE YOU FORGET
 
-        std::ifstream inputStream("20XX/input/XX.txt");
+        std::ifstream inputStream("20XX/XX.txt");
 
         if (!inputStream.is_open())
         {
