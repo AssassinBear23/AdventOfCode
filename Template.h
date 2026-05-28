@@ -14,7 +14,7 @@
 /// TODO: put a small description of the task
 struct Task
 {
-    static void run()
+    void run()
     {
 
         /// TODO: CHANGE THE DAMN FILE NAME BEFORE YOU FORGET
@@ -33,7 +33,8 @@ struct Task
         }
         inputStream.close();
     }
-    static void runPart2()
+    
+    void runPart2()
     {
     }
 };

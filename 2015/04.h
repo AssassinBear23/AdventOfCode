@@ -12,7 +12,8 @@
 #include <unordered_set>
 #include "../Utils/md5.h"
 
-/// TODO: put a small description of the task
+/// @brief Using a key (the input), find which MD5 hash with that key + a positive interger number starts with 5 zero's. 
+/// Part 2 is looking for 6 zero's
 struct Task
 {
     static void run()
