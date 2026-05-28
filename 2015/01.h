@@ -9,7 +9,7 @@
 
 struct Task
 {
-    void Run()
+    void run()
     {
         std::ifstream inputStream("2015/01.txt");
 

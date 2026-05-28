@@ -25,7 +25,7 @@ struct Task
     }
 
 
-    static void Run()
+    static void run()
     {
 
         std::ifstream inputStream("2015/02.txt");

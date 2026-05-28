@@ -14,10 +14,11 @@
 /// TODO: put a small description of the task
 struct Task
 {
-    static void Run()
+    static void run()
     {
 
         /// TODO: CHANGE THE DAMN FILE NAME BEFORE YOU FORGET
+        /// TODO: CHANGE INCLUDE FILE IN MAIN.CPP
 
         std::ifstream inputStream("20XX/XX.txt");
 
