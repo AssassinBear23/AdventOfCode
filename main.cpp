@@ -2,7 +2,7 @@
 
 // format: #include "YYYY/DD.h"
 
-#include "2015/05.h"
+#include "2015/06.h"
 
 int main()
 {
