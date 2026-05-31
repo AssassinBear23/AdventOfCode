@@ -14,39 +14,43 @@
 /// @brief Pt1: Using instructions turn on/off or toggle lights in specific ranges using given coordinate pairs. Answer is the amount of lights turned on.
 struct Task
 {
-    std::vector<uint16_t> enabledLights;
+    std::vector<std::vector<uint8_t>> enabledLights;
 
-    bool turnOnLight(uint16_t coordinate)
+    enum command
     {
-        if (std::find(enabledLights.begin(), enabledLights.end(), coordinate) == enabledLights.end())
+        on,
+        off,
+        toggle
+    };
+
+    int count()
+    {
+        int cnt = 0;
+        for (auto &i : enabledLights)
         {
-            enabledLights.push_back(coordinate);
-            return true;
+            for (auto &j : i)
+            {
+                j > 0 ? cnt += 1 : cnt += 0;
+            }
         }
-        return false;
+        return cnt;
     }
 
-    void turnOffLight(uint16_t coordinate)
+    int countBrightness()
     {
-        auto it = std::find(enabledLights.begin(), enabledLights.end(), coordinate);
-        if (it != enabledLights.end())
-            enabledLights.erase(std::remove(enabledLights.begin(), enabledLights.end(), coordinate), enabledLights.end());
-    }
-
-    void toggleLight(uint16_t coordinate)
-    {
-        if (!turnOnLight(coordinate))
-            turnOffLight(coordinate);
+        int cnt = 0;
+        for (auto &i : enabledLights)
+        {
+            for (auto &j : i)
+            {
+                cnt += j;
+            }
+        }
+        return cnt;
     }
 
     void processInput(std::string line)
     {
-        enum command
-        {
-            on,
-            off,
-            toggle
-        };
         command comm;
         int x1, x2, y1, y2;
 
@@ -54,63 +58,47 @@ struct Task
         {
             if (line.find("on") != std::string::npos) // found "on" in string.
             {
-                comm = command::on;
+                comm = on;
                 line.erase(0, 8);
             }
             else // "on" not found so its off.
             {
-                comm = command::off;
+                comm = off;
                 line.erase(0, 9);
             }
         }
         else // toggle command
         {
-            comm = command::toggle;
+            comm = toggle;
             line.erase(0, 7);
         }
-
-        line.erase(line.find("through"), 8);
 
         x1 = std::stoi(line);
         line.erase(0, line.find(',') + 1);
         y1 = std::stoi(line);
-        line.erase(0, line.find(std::to_string(y1)) + 1);
+        line.erase(0, line.find("through") + 8);
         x2 = std::stoi(line);
         line.erase(0, line.find(',') + 1);
         y2 = std::stoi(line);
-
-        switch (comm)
-        {
-        case command::on:
-            printf("Turning lights on in range: <%i, %i> to <%i, %i>. Currently %zu are on.\n", x1, y1, x2, y2, enabledLights.size());
-            break;
-        case command::off:
-            printf("Turning lights off in range: <%i, %i> to <%i, %i>. Currently %zu are on.\n", x1, y1, x2, y2, enabledLights.size());
-            break;
-        case command::toggle:
-            printf("Toggling lights in range: <%i, %i> to <%i, %i>. Currently %zu are on.\n", x1, y1, x2, y2, enabledLights.size());
-            break;
-        default:
-            break;
-        }
 
         for (int i = x1; i <= x2; i++)
         {
             for (int j = y1; j <= y2; j++)
             {
-                uint16_t coordinate = (i * 1000) + j;
                 switch (comm)
                 {
-                case command::on:
-                    turnOnLight(coordinate);
+                case on:
+                    enabledLights[i][j] += 1;
                     break;
-                case command::off:
-                    // printf("Turning off light at coordinate: <%i, %i>.\n", i, j);
-                    turnOffLight(coordinate);
+                case off:
+                {
+                    int current = enabledLights[i][j];
+                    if (current > 0)
+                        enabledLights[i][j] = current - 1;
                     break;
-                case command::toggle:
-                    // printf("Toggling light at coordinate: <%i, %i>.\n", i, j);
-                    toggleLight(coordinate);
+                }
+                case toggle:
+                    enabledLights[i][j] += 2;
                     break;
                 default:
                     std::printf("Error during processing, no input command set.");
@@ -123,6 +111,15 @@ struct Task
     void
     run()
     {
+        for (int i = 0; i < 1000; i++)
+        {
+            enabledLights.emplace_back();
+            for (int j = 0; j < 1000; j++)
+            {
+                enabledLights[i].emplace_back(0);
+            }
+        }
+
         std::ifstream inputStream("2015/06.txt");
 
         if (!inputStream.is_open())
@@ -139,11 +136,12 @@ struct Task
         inputStream.close();
         std::printf("Processed %i lines.\n", cnt);
 
-        std::printf("%zu lights are on.\n", enabledLights.size());
+        std::printf("%i lights are on.\n", count());
     }
 
     void runPart2()
     {
+        std::printf("%i is the total brightness\n", countBrightness());
     }
 };
 
